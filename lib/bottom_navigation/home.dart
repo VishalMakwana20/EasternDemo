@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +11,41 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  /// =========== Dots Create =============
+  ScrollController _scrollController = ScrollController();
+  final StreamController<int> _dotsController =
+      StreamController<int>.broadcast();
+  double itemSize = 0;
+  // to get the current Position of Scrolled Pictures
+  void _scrollListener() {
+    int currentIndex = (_scrollController.offset / itemSize).round();
+    _dotsController.sink.add(currentIndex);
+  }
+  // set itemSize
+  void initializeScrollController(BuildContext context) {
+    setState(() {
+      itemSize = MediaQuery.of(context).size.width;
+    });
+  }
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _dotsController.close();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    //
+    itemSize == 0 ? initializeScrollController(context) : null;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Category'),
@@ -123,6 +158,10 @@ class _HomeState extends State<Home> {
               height: 10,
             ),
             _buildboutique(),
+            const SizedBox(
+              height: 10,
+            ),
+            _dotsCreator(),
             const SizedBox(
               height: 10,
             ),
@@ -268,7 +307,7 @@ class _HomeState extends State<Home> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            'BEUTIFUl BANARASI',
+                            'BEAUTIFUL BANARaSI',
                             style: TextStyle(fontSize: 10),
                           ),
                           SizedBox(
@@ -379,6 +418,7 @@ class _HomeState extends State<Home> {
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: 5,
+        controller: _scrollController,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Padding(
@@ -415,6 +455,39 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
+  Widget _dotsCreator() {
+    return SizedBox(
+      height: 25,
+      width: MediaQuery.of(context).size.width,
+      child: StreamBuilder<int>(
+          stream: _dotsController.stream,
+          initialData: 0,
+          builder: (context, AsyncSnapshot<int> snapshot) {
+            return Center(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 5,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: snapshot.data == index ? 10 : 5,
+                      // maxRadius: snapshot.data == index ? 10 : 5,
+                      backgroundColor:
+                          snapshot.data == index ? Colors.red : Colors.black,
+                    ),
+                  );
+                },
+              ),
+            );
+          }),
+    );
+  }
+  
+  
+  
   // Widget _buildboutique() {
   //   return Padding(
   //     padding: const EdgeInsets.symmetric(horizontal: 10),
