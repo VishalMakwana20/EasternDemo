@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:eastern_demo/bloc/home_bloc.dart';
+import 'package:eastern_demo/model/bottom_model.dart';
+import 'package:eastern_demo/model/middle_model.dart';
+import 'package:eastern_demo/model/top_model.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -10,8 +14,9 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+HomeBloc? homeBloc;
 
+class _HomeState extends State<Home> {
   /// =========== Dots Create =============
   ScrollController _scrollController = ScrollController();
   final StreamController<int> _dotsController =
@@ -22,16 +27,22 @@ class _HomeState extends State<Home> {
     int currentIndex = (_scrollController.offset / itemSize).round();
     _dotsController.sink.add(currentIndex);
   }
+
   // set itemSize
   void initializeScrollController(BuildContext context) {
     setState(() {
       itemSize = MediaQuery.of(context).size.width;
     });
   }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    homeBloc = HomeBloc();
+    homeBloc!.fetchTopData();
+    homeBloc!.fetchMiddleData();
+    homeBloc!.fetchBottomData();
     super.initState();
   }
 
@@ -53,131 +64,9 @@ class _HomeState extends State<Home> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 90,
-              child: ListView.builder(
-                itemCount: 6,
-                // shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: SizedBox(
-                      width: 120,
-                      child: Column(
-                        children: [
-                          Image.network(
-                            "https://placeimg.com/868/430/fabric",
-                            height: 60,
-                            width: 120,
-                            fit: BoxFit.cover,
-                          ),
-                          const Text(
-                            'Fabrics ewrgergergergerg',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(overflow: TextOverflow.ellipsis),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            CarouselSlider(
-                items: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(
-                      children: [
-                        Column(
-                          children: [
-                            // Stack(
-                            //   children: <Widget>[
-                            Image.network(
-                              "https://placeimg.com/868/430/fabric",
-                              fit: BoxFit.cover,
-                            ),
-                            Expanded(
-                              child: Container(
-                                color: Colors.amber,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          bottom: 10,
-                          right: MediaQuery.of(context).size.width * 0.10,
-                          left: MediaQuery.of(context).size.width * 0.10,
-                          child: Card(
-                            child: Container(
-                              color: Colors.white,
-                              height: 70,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                options: CarouselOptions(
-                  autoPlay: true,
-                  aspectRatio: 2.0,
-                  enlargeCenterPage: true,
-                  initialPage: 2,
-                  // enableInfiniteScroll: false
-                )),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildTittleView('Shop By Category'),
-            _buildShopByCategory(),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildTittleView('Shop By Fabric Material'),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildShopByFabric(),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildTittleView('Unstitched'),
-            const SizedBox(
-              height: 5,
-            ),
-            _buildUnstitched(),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildTittleView('Boutique Collection'),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildboutique(),
-            const SizedBox(
-              height: 10,
-            ),
-            _dotsCreator(),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildTittleView('Range Of Pattern'),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildRangeOfPattern(),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildTittleView('Design As Per Occasion'),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildDesignOccasion(),
+            _buildTopView(),
+            _buidMiddleView(),
+            _buildBottomView(),
           ],
         ),
       ),
@@ -277,11 +166,11 @@ class _HomeState extends State<Home> {
         });
   }
 
-  Widget _buildShopByCategory() {
+  Widget _buildShopByCategory(List<ShopByCategory> list) {
     return GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 5),
-        itemCount: 6,
+        itemCount: list.length,
         shrinkWrap: true,
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
@@ -293,28 +182,47 @@ class _HomeState extends State<Home> {
                 children: [
                   Expanded(
                     child: Image.network(
-                      "https://placeimg.com/868/430/fabric",
+                      list[index].image!,
                       fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
                   ),
                   Container(
                     height: 40,
                     width: double.infinity,
-                    color: const Color.fromARGB(255, 48, 180, 116),
+                    color: HexColor(list[index].tintColor!),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 5, top: 5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'BEAUTIFUL BANARaSI',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                          SizedBox(
+                        children: [
+                          // Text(
+                          //   list[index].name!,
+                          //   style: const TextStyle(fontSize: 10),
+                          // ),
+
+                          Text.rich(TextSpan(
+                              text: list[index]
+                                  .name!
+                                  .substring(0, list[index].name!.indexOf(" "))
+                                  .toUpperCase(),
+                              style: const TextStyle(fontSize: 10),
+                              children: <InlineSpan>[
+                                TextSpan(
+                                  text: list[index]
+                                      .name!
+                                      .substring(list[index].name!.indexOf(" "))
+                                      .toUpperCase(),
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ])),
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
-                            '.Explore',
+                          const Text(
+                            '+Explore',
                             style: TextStyle(fontSize: 8),
                           )
                         ],
@@ -328,19 +236,44 @@ class _HomeState extends State<Home> {
         });
   }
 
-  Widget _buildShopByFabric() {
+  Widget _buildShopByFabric(List<ShopByFabric> list) {
     return GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 5),
-        itemCount: 6,
+        itemCount: list.length,
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 5),
         itemBuilder: (context, index) {
           return ClipOval(
-            child: Image.network(
-              "https://placeimg.com/868/430/fabric",
-              fit: BoxFit.cover,
+            child: Stack(
+              alignment: Alignment.center,
+              fit: StackFit.expand,
+              children: [
+                Image.network(
+                  list[index].image!,
+                  fit: BoxFit.cover,
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(200, 0, 0, 0),
+                        Color.fromARGB(0, 0, 0, 0)
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 10,
+                  child: Text(
+                    list[index].name ?? '',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
             ),
           );
         });
@@ -356,7 +289,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildUnstitched() {
+  Widget _buildUnstitched(List<Unstitched> list) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: CarouselSlider(
@@ -411,7 +344,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildboutique() {
+  Widget _buildboutique(List<BoutiqueCollection> list) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 95,
       height: 350,
@@ -485,9 +418,176 @@ class _HomeState extends State<Home> {
           }),
     );
   }
-  
-  
-  
+
+  Widget _buildTopView() {
+    return StreamBuilder<List<MainStickyMenu?>>(
+        stream: homeBloc!.topStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var listMainSticky = snapshot.data!;
+            return Column(
+              children: [
+                SizedBox(
+                  height: 90,
+                  child: ListView.builder(
+                    itemCount: listMainSticky.length,
+                    // shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: SizedBox(
+                          width: 120,
+                          child: Column(
+                            children: [
+                              Image.network(
+                                listMainSticky[index]!.image!,
+                                height: 60,
+                                width: 120,
+                                fit: BoxFit.cover,
+                              ),
+                              Text(
+                                listMainSticky[index]?.title ?? '',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CarouselSlider(
+                    items: [
+                      ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5.0)),
+                        child: Stack(
+                          children: [
+                            Column(
+                              children: [
+                                Image.network(
+                                  "https://placeimg.com/868/430/fabric",
+                                  fit: BoxFit.cover,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    color: Colors.amber,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Positioned(
+                              bottom: 10,
+                              right: MediaQuery.of(context).size.width * 0.10,
+                              left: MediaQuery.of(context).size.width * 0.10,
+                              child: Card(
+                                child: Container(
+                                  color: Colors.white,
+                                  height: 70,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                    options: CarouselOptions(
+                      autoPlay: true,
+                      aspectRatio: 2.0,
+                      enlargeCenterPage: true,
+                      initialPage: 2,
+
+                      // enableInfiniteScroll: false
+                    )),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            );
+          }
+          return CircularProgressIndicator();
+        });
+  }
+
+  Widget _buidMiddleView() {
+    return StreamBuilder<MiddlePage>(
+        stream: homeBloc!.middleStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: [
+                _buildTittleView('Shop By Category'),
+                _buildShopByCategory(snapshot.data!.shopByCategory!),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildTittleView('Shop By Fabric Material'),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildShopByFabric(snapshot.data!.shopByFabric!),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildTittleView('Unstitched'),
+                const SizedBox(
+                  height: 5,
+                ),
+                _buildUnstitched(snapshot.data!.unstitched!),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildTittleView('Boutique Collection'),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildboutique(snapshot.data!.boutiqueCollection!),
+              ],
+            );
+          }
+          return const CircularProgressIndicator();
+        });
+  }
+
+  Widget _buildBottomView() {
+    return StreamBuilder<BottomPage>(
+        stream: homeBloc!.bottomStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                _dotsCreator(),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildTittleView('Range Of Pattern'),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildRangeOfPattern(),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildTittleView('Design As Per Occasion'),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildDesignOccasion(),
+              ],
+            );
+          }
+          return const CircularProgressIndicator();
+        });
+  }
+
   // Widget _buildboutique() {
   //   return Padding(
   //     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -538,4 +638,16 @@ class _HomeState extends State<Home> {
   //         )),
   //   );
   // }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
