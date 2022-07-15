@@ -2,7 +2,9 @@ import 'package:eastern_demo/constant/const_image.dart';
 import 'package:eastern_demo/model/category_model.dart';
 import 'package:eastern_demo/widget/show_image.dart';
 import 'package:flutter/material.dart';
-import 'package:proste_bezier_curve/proste_bezier_curve.dart';
+// import 'package:proste_bezier_curve/proste_bezier_curve.dart';
+
+import 'dart:math' as math;
 
 import '../bloc/category_bloc.dart';
 
@@ -49,7 +51,12 @@ class _CategoryState extends State<Category> {
     );
   }
 
-  List ls = [Colors.amber[200] ,Colors.blue[200],Colors.deepOrange[200],Colors.pinkAccent[200]];
+  List ls = [
+    Colors.amber[200],
+    Colors.blue[200],
+    Colors.deepOrange[200],
+    Colors.pinkAccent[200]
+  ];
 
   Widget _buildBody() {
     return Column(
@@ -61,37 +68,69 @@ class _CategoryState extends State<Category> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var list = snapshot.data!;
+                  Color color =
+                      Color((math.Random().nextDouble() * 0xFFFFFF).toInt());
                   return Column(
                     children: [
                       ListView.builder(
-                          itemCount: list.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                const Divider(
-                                  height: 1,
+                        itemCount: 6,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Stack(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Row(children: [
+                                  const Spacer(),
+                                  Container(
+                                      height: 70,
+                                      width: MediaQuery.of(context).size.width,
+                                      color: color.withOpacity(0.7)),
+                                ]),
+                              ),
+                              Positioned(
+                                left: 1,
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.5,
+                                  height: 70,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(),
+                                  child: Container(
+                                    margin:
+                                        const EdgeInsets.only(right: 30), // ***
+                                    decoration: BoxDecoration(
+                                      color: color.withOpacity(0.9),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.4),
+                                          blurRadius: 5,
+                                          spreadRadius: 1,
+                                        )
+                                      ],
+                                      borderRadius:
+                                          const BorderRadius.horizontal(
+                                              right:
+                                                  Radius.elliptical(60, 100.0)),
+                                    ),
+                                    child: const Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text('       Random Name')),
+                                  ),
                                 ),
-                               Stack(
-                                 children: [
-                                   Container(width: double.infinity,height: 120,
-                                     color: Colors.grey,
-                                   ),
-                                   Positioned(right: 0,top: 0,
-                                     child: Container(
-                                        width: 240,
-                                         height:120,
-                                         child: Image(image: NetworkImage("https://placeimg.com/868/430/fabric",),fit: BoxFit.cover,)),
-                                   ),
-
-                                   ],
-                               ),
-                                const Divider(
-                                  height: 1,
-                                ),
-                              ],
-                            );
-                          })
+                              ),
+                              Positioned(
+                                right: 25,
+                                child: Image.network(
+                                    "https://placeimg.com/868/430/fabric",
+                                    height: 70,
+                                    width: 100,
+                                    fit: BoxFit.cover),
+                              )
+                            ],
+                          );
+                        },
+                      ),
                     ],
                   );
                 } else if (snapshot.hasError) {
