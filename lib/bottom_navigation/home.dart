@@ -114,7 +114,15 @@ class _HomeState extends State<Home> {
             const SizedBox(
               height: 5,
             ),
-            _buildUnstitched()
+            _buildUnstitched(),
+            const SizedBox(
+              height: 10,
+            ),
+            _buildTittleView('Boutique Collection'),
+            const SizedBox(
+              height: 10,
+            ),
+            _buildboutique()
           ],
         ),
       ),
@@ -201,49 +209,108 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildUnstitched() {
-    return CarouselSlider(
-        items: [
-          Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              Image.network("https://placeimg.com/868/430/fabric",
-                  fit: BoxFit.cover),
-              Positioned(
-                bottom: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: Container(
-                  color: Colors.transparent,
-                  // decoration: const BoxDecoration(
-                  //   gradient: LinearGradient(
-                  //     colors: [],
-                  //     begin: Alignment.bottomCenter,
-                  //     end: Alignment.topCenter,
-                  //   ),
-                  // ),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 20.0),
-                  child: const Text(
-                    'No Image',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: CarouselSlider(
+          items: [
+            Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                Image.network("https://placeimg.com/868/430/fabric",
+                    fit: BoxFit.cover),
+                Positioned(
+                  bottom: 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: Container(
+                    // color: Colors.transparent,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black38,
+                          Colors.black38,
+                          Colors.black38,
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 20.0),
+                    child: const Text(
+                      'No Image',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
-        options: CarouselOptions(
-          // disableCenter: true,
-          enlargeStrategy: CenterPageEnlargeStrategy.height,
-          autoPlay: true,
-          aspectRatio: 2.0,
-          enlargeCenterPage: true,
-          initialPage: 2,
-          // enableInfiniteScroll: false
-        ));
+              ],
+            )
+          ],
+          options: CarouselOptions(
+            // disableCenter: true,
+            enlargeStrategy: CenterPageEnlargeStrategy.height,
+            autoPlay: true,
+
+            aspectRatio: 1,
+            enlargeCenterPage: true,
+            initialPage: 2,
+            // enableInfiniteScroll: false
+          )),
+    );
+  }
+
+  Widget _buildboutique() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: CarouselSlider(
+          items: [
+            Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                Image.network("https://placeimg.com/868/430/fabric",
+                    fit: BoxFit.cover),
+                Positioned(
+                  bottom: 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: Container(
+                    // color: Colors.transparent,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black38,
+                          Colors.black38,
+                          Colors.black38,
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 20.0),
+                    child: const Text(
+                      'No Image',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+          options: CarouselOptions(
+            disableCenter: true,
+            aspectRatio: 1,
+            initialPage: 1,
+            // enableInfiniteScroll: false
+          )),
+    );
   }
 }
