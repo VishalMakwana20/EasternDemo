@@ -2,6 +2,7 @@ import 'package:eastern_demo/constant/const_image.dart';
 import 'package:eastern_demo/model/category_model.dart';
 import 'package:eastern_demo/widget/show_image.dart';
 import 'package:flutter/material.dart';
+import 'package:proste_bezier_curve/proste_bezier_curve.dart';
 
 import '../bloc/category_bloc.dart';
 
@@ -48,6 +49,8 @@ class _CategoryState extends State<Category> {
     );
   }
 
+  List ls = [Colors.amber[200] ,Colors.blue[200],Colors.deepOrange[200],Colors.pinkAccent[200]];
+
   Widget _buildBody() {
     return Column(
       children: [
@@ -69,19 +72,20 @@ class _CategoryState extends State<Category> {
                                 const Divider(
                                   height: 1,
                                 ),
-                                Container(
-                                  decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                    image: NetworkImage(
-                                        "https://placeimg.com/868/430/fabric"),
-                                    fit: BoxFit.cover,
-                                  )),
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.18,
-                                  child: SizedBox.expand(
-                                    child: Text(list[index].categoryName!),
-                                  ),
-                                ),
+                               Stack(
+                                 children: [
+                                   Container(width: double.infinity,height: 120,
+                                     color: Colors.grey,
+                                   ),
+                                   Positioned(right: 0,top: 0,
+                                     child: Container(
+                                        width: 240,
+                                         height:120,
+                                         child: Image(image: NetworkImage("https://placeimg.com/868/430/fabric",),fit: BoxFit.cover,)),
+                                   ),
+
+                                   ],
+                               ),
                                 const Divider(
                                   height: 1,
                                 ),
