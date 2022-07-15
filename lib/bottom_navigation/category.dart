@@ -73,60 +73,79 @@ class _CategoryState extends State<Category> {
                   return Column(
                     children: [
                       ListView.builder(
-                        itemCount: 6,
+                        itemCount: list.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return Stack(
+                          return Column(
                             children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: Row(children: [
-                                  const Spacer(),
-                                  Container(
-                                      height: 70,
-                                      width: MediaQuery.of(context).size.width,
-                                      color: color.withOpacity(0.7)),
-                                ]),
-                              ),
-                              Positioned(
-                                left: 1,
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.5,
-                                  height: 70,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(),
-                                  child: Container(
-                                    margin:
-                                        const EdgeInsets.only(right: 30), // ***
-                                    decoration: BoxDecoration(
-                                      color: color.withOpacity(0.9),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.4),
-                                          blurRadius: 5,
-                                          spreadRadius: 1,
-                                        )
-                                      ],
-                                      borderRadius:
-                                          const BorderRadius.horizontal(
-                                              right:
-                                                  Radius.elliptical(60, 100.0)),
-                                    ),
-                                    child: const Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text('       Random Name')),
+                              Stack(
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Row(children: [
+                                      const Spacer(),
+                                      Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.15,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          color: color.withOpacity(0.7)),
+                                    ]),
                                   ),
-                                ),
+                                  Positioned(
+                                    left: 1,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.15,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: const BoxDecoration(),
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            right: 30), // ***
+                                        decoration: BoxDecoration(
+                                          color: color.withOpacity(0.9),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.4),
+                                              blurRadius: 5,
+                                              spreadRadius: 1,
+                                            )
+                                          ],
+                                          borderRadius:
+                                              const BorderRadius.horizontal(
+                                                  right: Radius.elliptical(
+                                                      60, 100.0)),
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 15),
+                                              child: Text(
+                                                  list[index].categoryName!)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 25,
+                                    child: Image.network(
+                                        "https://placeimg.com/868/430/fabric",
+                                        height: 70,
+                                        width: 100,
+                                        fit: BoxFit.cover),
+                                  )
+                                ],
                               ),
-                              Positioned(
-                                right: 25,
-                                child: Image.network(
-                                    "https://placeimg.com/868/430/fabric",
-                                    height: 70,
-                                    width: 100,
-                                    fit: BoxFit.cover),
-                              )
+                              const Divider(
+                                height: 1,
+                              ),
                             ],
                           );
                         },

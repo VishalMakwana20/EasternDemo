@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eastern_demo/bloc/home_bloc.dart';
+import 'package:eastern_demo/constant/const_image.dart';
 import 'package:eastern_demo/model/bottom_model.dart';
 import 'package:eastern_demo/model/middle_model.dart';
 import 'package:eastern_demo/model/top_model.dart';
 import 'package:flutter/material.dart';
+
+import '../widget/show_image.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -58,26 +61,80 @@ class _HomeState extends State<Home> {
     //
     itemSize == 0 ? initializeScrollController(context) : null;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Category'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildTopView(),
-            _buidMiddleView(),
-            _buildBottomView(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildAppBar(),
+              _buildTopView(),
+              _buidMiddleView(),
+              _buildBottomView(),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildDesignOccasion() {
+  Widget _buildAppBar() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, right: 20, left: 20, bottom: 15),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const ShowImage(
+            imagePath: ConstImage.leftBack,
+            height: 20,
+            width: 20,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          const Expanded(
+              child: Text(
+            'Category',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            textAlign: TextAlign.center,
+          )),
+          const ShowImage(
+            imagePath: ConstImage.search,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Stack(
+            children: [
+              const ShowImage(
+                imagePath: ConstImage.shopping,
+                height: 24,
+                width: 24,
+              ),
+              Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.grey),
+                    child: const Text(
+                      '1',
+                      style: TextStyle(color: Colors.white, fontSize: 10),
+                    ),
+                  ))
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDesignOccasion(List<DesignOccasion> list) {
     return GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 5),
-        itemCount: 6,
+        itemCount: list.length,
         shrinkWrap: true,
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
@@ -85,46 +142,54 @@ class _HomeState extends State<Home> {
           return Card(
             child: SizedBox(
               height: 150,
-              child: Column(
+              child: Stack(
                 children: [
                   Expanded(
                     child: Image.network(
-                      "https://placeimg.com/868/430/fabric",
+                      list[index].image!,
                       fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
                   ),
-                  Container(
-                    height: 40,
-                    width: double.infinity,
-                    color: const Color.fromARGB(255, 48, 180, 116),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 5, top: 5.5, right: 5, bottom: 5.5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'BIRTHDAY',
-                            style: TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 5.5,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                'COLLECTION',
-                                style: TextStyle(fontSize: 8),
-                              ),
-                              Text(
-                                '+Explore',
-                                style: TextStyle(fontSize: 8),
-                              ),
-                            ],
-                          )
-                        ],
+                  Positioned(
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      color: Colors.white.withAlpha(200),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 5, top: 5.5, right: 5, bottom: 5.5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              list[index].name!,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 5.5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  list[index].subName!,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 8),
+                                ),
+                                const Text(
+                                  '+Explore',
+                                  style: TextStyle(fontSize: 8),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -135,29 +200,44 @@ class _HomeState extends State<Home> {
         });
   }
 
-  Widget _buildRangeOfPattern() {
+  Widget _buildRangeOfPattern(List<RangeOfPattern> list) {
     return GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 5),
-        itemCount: 6,
+        itemCount: list.length,
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 5),
         itemBuilder: (context, index) {
           return ClipOval(
             child: Stack(
+              alignment: Alignment.center,
               fit: StackFit.expand,
               children: [
                 Image.network(
-                  "https://placeimg.com/868/430/fabric",
+                  list[index].image!,
                   fit: BoxFit.cover,
                 ),
-                const Positioned(
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(200, 0, 0, 0),
+                        Color.fromARGB(0, 0, 0, 0)
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                  ),
+                ),
+                Positioned(
                   bottom: 10,
-                  left: 10,
                   child: Text(
-                    'ABSTRACT\nPRINT',
-                    style: TextStyle(color: Colors.white),
+                    list[index].name!.split(" ").first +
+                        " \n" +
+                        list[index].name!.split(" ").last,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white),
                   ),
                 )
               ],
@@ -196,28 +276,29 @@ class _HomeState extends State<Home> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Text(
-                          //   list[index].name!,
-                          //   style: const TextStyle(fontSize: 10),
-                          // ),
-
-                          Text.rich(TextSpan(
-                              text: list[index]
-                                  .name!
-                                  .substring(0, list[index].name!.indexOf(" "))
-                                  .toUpperCase(),
-                              style: const TextStyle(fontSize: 10),
-                              children: <InlineSpan>[
-                                TextSpan(
-                                  text: list[index]
-                                      .name!
-                                      .substring(list[index].name!.indexOf(" "))
-                                      .toUpperCase(),
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ])),
+                          Text.rich(
+                            TextSpan(
+                                text: list[index]
+                                    .name!
+                                    .substring(
+                                        0, list[index].name!.indexOf(" "))
+                                    .toUpperCase(),
+                                style: const TextStyle(fontSize: 10),
+                                children: <InlineSpan>[
+                                  TextSpan(
+                                    text: list[index]
+                                        .name!
+                                        .substring(
+                                            list[index].name!.indexOf(" "))
+                                        .toUpperCase(),
+                                    style: const TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ]),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           const SizedBox(
                             height: 5,
                           ),
@@ -253,6 +334,7 @@ class _HomeState extends State<Home> {
                 Image.network(
                   list[index].image!,
                   fit: BoxFit.cover,
+                  width: double.infinity,
                 ),
                 Container(
                   decoration: const BoxDecoration(
@@ -293,12 +375,11 @@ class _HomeState extends State<Home> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: CarouselSlider(
-          items: [
-            Stack(
+          items: list.map((item) {
+            return Stack(
               fit: StackFit.expand,
               children: <Widget>[
-                Image.network("https://placeimg.com/868/430/fabric",
-                    fit: BoxFit.cover),
+                Image.network(item.image!, fit: BoxFit.cover),
                 Positioned(
                   bottom: 0.0,
                   left: 0.0,
@@ -318,19 +399,22 @@ class _HomeState extends State<Home> {
                     ),
                     padding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 20.0),
-                    child: const Text(
-                      'No Image',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        item.name ?? '',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ],
-            )
-          ],
+            );
+          }).toList(),
           options: CarouselOptions(
             // disableCenter: true,
             enlargeStrategy: CenterPageEnlargeStrategy.height,
@@ -350,7 +434,7 @@ class _HomeState extends State<Home> {
       height: 350,
       child: ListView.builder(
         shrinkWrap: true,
-        itemCount: 5,
+        itemCount: list.length,
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
@@ -361,7 +445,7 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   height: 350,
                   width: MediaQuery.of(context).size.width * 0.95,
-                  child: Image.network("https://placeimg.com/868/430/fabric",
+                  child: Image.network(list[index].bannerImage!,
                       fit: BoxFit.cover),
                 ),
                 Positioned(
@@ -404,12 +488,12 @@ class _HomeState extends State<Home> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(2.0),
                     child: CircleAvatar(
-                      radius: snapshot.data == index ? 10 : 5,
+                      radius: snapshot.data == index ? 4 : 2,
                       // maxRadius: snapshot.data == index ? 10 : 5,
                       backgroundColor:
-                          snapshot.data == index ? Colors.red : Colors.black,
+                          snapshot.data == index ? Colors.black : Colors.grey,
                     ),
                   );
                 },
@@ -547,6 +631,10 @@ class _HomeState extends State<Home> {
                   height: 10,
                 ),
                 _buildboutique(snapshot.data!.boutiqueCollection!),
+                const SizedBox(
+                  height: 10,
+                ),
+                _dotsCreator(),
               ],
             );
           }
@@ -564,15 +652,11 @@ class _HomeState extends State<Home> {
                 const SizedBox(
                   height: 10,
                 ),
-                _dotsCreator(),
-                const SizedBox(
-                  height: 10,
-                ),
                 _buildTittleView('Range Of Pattern'),
                 const SizedBox(
                   height: 10,
                 ),
-                _buildRangeOfPattern(),
+                _buildRangeOfPattern(snapshot.data!.rangeOfPattern!),
                 const SizedBox(
                   height: 10,
                 ),
@@ -580,7 +664,7 @@ class _HomeState extends State<Home> {
                 const SizedBox(
                   height: 10,
                 ),
-                _buildDesignOccasion(),
+                _buildDesignOccasion(snapshot.data!.designOccasion!),
               ],
             );
           }
