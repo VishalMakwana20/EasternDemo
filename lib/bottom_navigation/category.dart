@@ -163,56 +163,58 @@ class _CategoryState extends State<Category> {
   }
 
   Widget _buildAppBar() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15, right: 20, left: 20, bottom: 15),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const ShowImage(
-            imagePath: ConstImage.leftBack,
-            height: 20,
-            width: 20,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          const Expanded(
-              child: Text(
-            'Category',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            textAlign: TextAlign.center,
-          )),
-          const ShowImage(
-            imagePath: ConstImage.search,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Stack(
-            children: [
-              const ShowImage(
+    return Stack(
+      children: [
+        Padding(
+          padding:
+              const EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              ShowImage(
+                imagePath: ConstImage.leftBack,
+                height: 20,
+                width: 20,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Text(
+                  'Category',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              ShowImage(
+                imagePath: ConstImage.search,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              ShowImage(
                 imagePath: ConstImage.shopping,
                 height: 24,
                 width: 24,
-              ),
-              Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    width: 20,
-                    height: 20,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.grey),
-                    child: const Text(
-                      '1',
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                    ),
-                  ))
+              )
             ],
-          )
-        ],
-      ),
+          ),
+        ),
+        Positioned(
+            right: 15,
+            top: 5,
+            child: Container(
+              width: 20,
+              height: 20,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: Colors.grey),
+              child: const Text(
+                '1',
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ))
+      ],
     );
   }
 }

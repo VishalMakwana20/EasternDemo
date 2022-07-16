@@ -9,7 +9,7 @@ class TopMenu {
     if (json['main_sticky_menu'] != null) {
       mainStickyMenu = <MainStickyMenu>[];
       json['main_sticky_menu'].forEach((v) {
-        mainStickyMenu!.add(new MainStickyMenu.fromJson(v));
+        mainStickyMenu!.add(MainStickyMenu.fromJson(v));
       });
     }
     status = json['status'];
@@ -17,13 +17,13 @@ class TopMenu {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.mainStickyMenu != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (mainStickyMenu != null) {
       data['main_sticky_menu'] =
-          this.mainStickyMenu!.map((v) => v.toJson()).toList();
+          mainStickyMenu!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -43,19 +43,18 @@ class MainStickyMenu {
     if (json['slider_images'] != null) {
       sliderImages = <SliderImages>[];
       json['slider_images'].forEach((v) {
-        sliderImages!.add(new SliderImages.fromJson(v));
+        sliderImages!.add(SliderImages.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['title'] = this.title;
-    data['image'] = this.image;
-    data['sort_order'] = this.sortOrder;
-    if (this.sliderImages != null) {
-      data['slider_images'] =
-          this.sliderImages!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['title'] = title;
+    data['image'] = image;
+    data['sort_order'] = sortOrder;
+    if (sliderImages != null) {
+      data['slider_images'] = sliderImages!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -77,11 +76,11 @@ class SliderImages {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['title'] = this.title;
-    data['image'] = this.image;
-    data['sort_order'] = this.sortOrder;
-    data['cta'] = this.cta;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['title'] = title;
+    data['image'] = image;
+    data['sort_order'] = sortOrder;
+    data['cta'] = cta;
     return data;
   }
 }

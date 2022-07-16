@@ -67,15 +67,15 @@ class ShowImage extends StatelessWidget {
           baseColor: ConstColor.gray200,
           highlightColor: ConstColor.gray200.withOpacity(0.9),
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
             ),
           ),
         ),
-        errorWidget: (context, url, error) => Container(
+        errorWidget: (context, url, error) => SizedBox(
           height: height,
           width: width,
-          child: Icon(
+          child: const Icon(
             Icons.person,
             color: ConstColor.white,
           ),
@@ -104,14 +104,14 @@ class ShowImage extends StatelessWidget {
             height: height,
             width: width,
             color: ConstColor.gray200,
-            child: Icon(Icons.person),
+            child: const Icon(Icons.person),
           );
         } else if (imagePath == '') {
           return Container(
             height: height,
             width: width,
             color: ConstColor.gray200,
-            child: Icon(Icons.person),
+            child: const Icon(Icons.person),
           );
         } else {
           return Image.file(

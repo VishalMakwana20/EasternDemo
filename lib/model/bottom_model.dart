@@ -11,13 +11,13 @@ class BottomPage {
     if (json['range_of_pattern'] != null) {
       rangeOfPattern = <RangeOfPattern>[];
       json['range_of_pattern'].forEach((v) {
-        rangeOfPattern!.add(new RangeOfPattern.fromJson(v));
+        rangeOfPattern!.add(RangeOfPattern.fromJson(v));
       });
     }
     if (json['design_occasion'] != null) {
       designOccasion = <DesignOccasion>[];
       json['design_occasion'].forEach((v) {
-        designOccasion!.add(new DesignOccasion.fromJson(v));
+        designOccasion!.add(DesignOccasion.fromJson(v));
       });
     }
     status = json['status'];
@@ -25,17 +25,16 @@ class BottomPage {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.rangeOfPattern != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (rangeOfPattern != null) {
       data['range_of_pattern'] =
-          this.rangeOfPattern!.map((v) => v.toJson()).toList();
+          rangeOfPattern!.map((v) => v.toJson()).toList();
     }
-    if (this.designOccasion != null) {
-      data['design_occasion'] =
-          this.designOccasion!.map((v) => v.toJson()).toList();
+    if (designOccasion != null) {
+      data['design_occasion'] = designOccasion!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -54,10 +53,10 @@ class RangeOfPattern {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['image'] = this.image;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_id'] = productId;
+    data['image'] = image;
+    data['name'] = name;
     return data;
   }
 }
@@ -81,12 +80,12 @@ class DesignOccasion {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['name'] = this.name;
-    data['image'] = this.image;
-    data['sub_name'] = this.subName;
-    data['cta'] = this.cta;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['product_id'] = productId;
+    data['name'] = name;
+    data['image'] = image;
+    data['sub_name'] = subName;
+    data['cta'] = cta;
     return data;
   }
 }

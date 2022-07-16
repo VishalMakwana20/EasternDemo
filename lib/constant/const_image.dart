@@ -8,4 +8,5 @@ class ConstImage {
   static const String leftBack = _assetPath + 'left_back_arrow.svg';
   static const String search = _assetPath + 'search.svg';
   static const String shopping = _assetPath + 'shopping.svg';
+  static const String logo = _assetPath + 'logo.png';
 }

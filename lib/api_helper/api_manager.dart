@@ -7,9 +7,7 @@ import 'custom_exception.dart';
 
 class APIManager {
   Future<Map<String, dynamic>> getApiCall(String url) async {
-    print("Calling API: $url");
-
-    var responseJson;
+    Map<String, dynamic> responseJson;
     try {
       final response = await http.get(Uri.parse(url));
       responseJson = _response(response);

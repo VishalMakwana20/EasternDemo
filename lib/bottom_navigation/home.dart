@@ -77,56 +77,48 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildAppBar() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15, right: 20, left: 20, bottom: 15),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const ShowImage(
-            imagePath: ConstImage.leftBack,
-            height: 20,
-            width: 20,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          const Expanded(
-              child: Text(
-            'Category',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-            textAlign: TextAlign.center,
-          )),
-          const ShowImage(
-            imagePath: ConstImage.search,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Stack(
-            children: [
-              const ShowImage(
+    return Stack(
+      children: [
+        Padding(
+          padding:
+              const EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              ShowImage(
+                imagePath: ConstImage.logo,
+                height: 30,
+              ),
+              Spacer(),
+              ShowImage(
+                imagePath: ConstImage.search,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              ShowImage(
                 imagePath: ConstImage.shopping,
                 height: 24,
                 width: 24,
-              ),
-              Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    width: 20,
-                    height: 20,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.grey),
-                    child: const Text(
-                      '1',
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                    ),
-                  ))
+              )
             ],
-          )
-        ],
-      ),
+          ),
+        ),
+        Positioned(
+            right: 15,
+            top: 5,
+            child: Container(
+              width: 20,
+              height: 20,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: Colors.grey),
+              child: const Text(
+                '1',
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ))
+      ],
     );
   }
 
@@ -222,8 +214,9 @@ class _HomeState extends State<Home> {
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Color.fromARGB(200, 0, 0, 0),
-                        Color.fromARGB(0, 0, 0, 0)
+                        Color.fromARGB(100, 0, 0, 0),
+                        Color.fromARGB(0, 0, 0, 0),
+                        Color.fromARGB(0, 0, 0, 0),
                       ],
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
@@ -232,12 +225,15 @@ class _HomeState extends State<Home> {
                 ),
                 Positioned(
                   bottom: 10,
-                  child: Text(
-                    list[index].name!.split(" ").first +
-                        " \n" +
-                        list[index].name!.split(" ").last,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      list[index].name!.split(" ").first +
+                          " \n" +
+                          list[index].name!.split(" ").last,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 )
               ],
@@ -341,7 +337,8 @@ class _HomeState extends State<Home> {
                     gradient: LinearGradient(
                       colors: [
                         Color.fromARGB(200, 0, 0, 0),
-                        Color.fromARGB(0, 0, 0, 0)
+                        Color.fromARGB(0, 0, 0, 0),
+                        Color.fromARGB(0, 0, 0, 0),
                       ],
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
@@ -350,9 +347,12 @@ class _HomeState extends State<Home> {
                 ),
                 Positioned(
                   bottom: 10,
-                  child: Text(
-                    list[index].name ?? '',
-                    style: const TextStyle(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      list[index].name ?? '',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 )
               ],
@@ -362,11 +362,15 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildTittleView(String title) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        title,
-        style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.grey),
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, top: 25, bottom: 8),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          title,
+          style:
+              const TextStyle(fontWeight: FontWeight.w600, color: Colors.grey),
+        ),
       ),
     );
   }
@@ -430,7 +434,6 @@ class _HomeState extends State<Home> {
 
   Widget _buildboutique(List<BoutiqueCollection> list) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 95,
       height: 350,
       child: ListView.builder(
         shrinkWrap: true,
@@ -443,28 +446,72 @@ class _HomeState extends State<Home> {
             child: Stack(
               children: [
                 SizedBox(
-                  height: 350,
                   width: MediaQuery.of(context).size.width * 0.95,
+                  height: double.infinity,
                   child: Image.network(list[index].bannerImage!,
                       fit: BoxFit.cover),
                 ),
-                Positioned(
-                    bottom: 0,
-                    // left:  MediaQuery.of(context).size.width * 0.95,
-                    child: Card(
-                      elevation: 15,
-                      color: Colors.black.withOpacity(0.4),
-                      child: SizedBox(
-                        height: 100,
-                        width: MediaQuery.of(context).size.width * 0.95,
-                        child: const Center(
-                          child: Text(
-                            'Trial Text',
-                            style: TextStyle(color: Colors.yellow),
-                          ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.95,
+                  height: double.infinity,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(500, 0, 0, 0),
+                        Color.fromARGB(0, 0, 0, 0),
+                        Color.fromARGB(0, 0, 0, 0)
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          list[index].name ?? '',
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ),
-                    ))
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          '+EXPLORE',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Positioned(
+                //     bottom: 0,
+                //     // left:  MediaQuery.of(context).size.width * 0.95,
+                //     child: Card(
+                //       elevation: 15,
+                //       color: Colors.black.withOpacity(0.4),
+                //       child: SizedBox(
+                //         height: 100,
+                //         width: MediaQuery.of(context).size.width * 0.95,
+                //         child: Center(
+                //           child: Text(
+                //             list[index].name ?? '',
+                //             style: const TextStyle(color: Colors.yellow),
+                //           ),
+                //         ),
+                //       ),
+                //     ))
               ],
             ),
           );
@@ -473,7 +520,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _dotsCreator() {
+  Widget _dotsCreator(int length) {
     return SizedBox(
       height: 25,
       width: MediaQuery.of(context).size.width,
@@ -484,14 +531,13 @@ class _HomeState extends State<Home> {
             return Center(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 5,
+                itemCount: length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: CircleAvatar(
                       radius: snapshot.data == index ? 4 : 2,
-                      // maxRadius: snapshot.data == index ? 10 : 5,
                       backgroundColor:
                           snapshot.data == index ? Colors.black : Colors.grey,
                     ),
@@ -511,11 +557,11 @@ class _HomeState extends State<Home> {
             var listMainSticky = snapshot.data!;
             return Column(
               children: [
-                SizedBox(
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
                   height: 90,
                   child: ListView.builder(
                     itemCount: listMainSticky.length,
-                    // shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return Card(
@@ -543,58 +589,123 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 25,
                 ),
+                // CarouselSlider(
+                //     items: [
+                //       ClipRRect(
+                //         borderRadius:
+                //             const BorderRadius.all(Radius.circular(5.0)),
+                //         child: Stack(
+                //           children: [
+                //             Column(
+                //               children: [
+                //                 Image.network(
+                //                   "https://placeimg.com/868/430/fabric",
+                //                   fit: BoxFit.cover,
+                //                 ),
+                //                 Expanded(
+                //                   child: Container(
+                //                     color: Colors.amber,
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //             Positioned(
+                //               bottom: 10,
+                //               right: MediaQuery.of(context).size.width * 0.10,
+                //               left: MediaQuery.of(context).size.width * 0.10,
+                //               child: Card(
+                //                 child: Container(
+                //                   color: Colors.white,
+                //                   height: 70,
+                //                 ),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+
+                //     ],
+                //     options: CarouselOptions(
+                //       autoPlay: true,
+                //       aspectRatio: 2.0,
+                //       enlargeCenterPage: true,
+                //       initialPage: 2,
+                //       // enableInfiniteScroll: false
+                //     )),
+
                 CarouselSlider(
-                    items: [
-                      ClipRRect(
+                    items: listMainSticky[0]!.sliderImages!.map((item) {
+                      return ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(5.0)),
                         child: Stack(
                           children: [
-                            Column(
-                              children: [
-                                Image.network(
-                                  "https://placeimg.com/868/430/fabric",
-                                  fit: BoxFit.cover,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    color: Colors.amber,
-                                  ),
-                                ),
-                              ],
+                            Image.network(
+                              item.image!,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
+                            Positioned(
+                                bottom: 0,
+                                right: 0,
+                                left: 0,
+                                child: Container(
+                                  height: 40,
+                                  color: HexColor('#ccffcc'),
+                                )),
                             Positioned(
                               bottom: 10,
                               right: MediaQuery.of(context).size.width * 0.10,
                               left: MediaQuery.of(context).size.width * 0.10,
                               child: Card(
                                 child: Container(
+                                  padding: const EdgeInsets.all(8),
                                   color: Colors.white,
-                                  height: 70,
+                                  height: 75,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        (item.title! +
+                                                "\n\nPlain Starting just at  ₹79/-")
+                                            .toUpperCase(),
+                                        style: const TextStyle(fontSize: 9),
+                                      ),
+                                      const SizedBox(
+                                        height: 6,
+                                      ),
+                                      Text(
+                                        "+ Explore".toUpperCase(),
+                                        style: const TextStyle(fontSize: 6),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    }).toList(),
                     options: CarouselOptions(
                       autoPlay: true,
                       aspectRatio: 2.0,
                       enlargeCenterPage: true,
-                      initialPage: 2,
-
+                      initialPage: 1,
                       // enableInfiniteScroll: false
                     )),
+
                 const SizedBox(
                   height: 10,
                 ),
               ],
             );
           }
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         });
   }
 
@@ -634,7 +745,7 @@ class _HomeState extends State<Home> {
                 const SizedBox(
                   height: 10,
                 ),
-                _dotsCreator(),
+                _dotsCreator(snapshot.data!.boutiqueCollection!.length),
               ],
             );
           }
@@ -671,57 +782,6 @@ class _HomeState extends State<Home> {
           return const CircularProgressIndicator();
         });
   }
-
-  // Widget _buildboutique() {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 10),
-  //     child: CarouselSlider(
-  //         items: [
-  //           Stack(
-  //             fit: StackFit.expand,
-  //             children: <Widget>[
-  //               Image.network("https://placeimg.com/868/430/fabric",
-  //                   fit: BoxFit.cover),
-  //               Positioned(
-  //                 bottom: 0.0,
-  //                 left: 0.0,
-  //                 right: 0.0,
-  //                 child: Container(
-  //                   // color: Colors.transparent,
-  //                   decoration: const BoxDecoration(
-  //                     gradient: LinearGradient(
-  //                       colors: [
-  //                         Colors.black38,
-  //                         Colors.black38,
-  //                         Colors.black38,
-  //                       ],
-  //                       begin: Alignment.bottomCenter,
-  //                       end: Alignment.topCenter,
-  //                     ),
-  //                   ),
-  //                   padding: const EdgeInsets.symmetric(
-  //                       vertical: 10.0, horizontal: 20.0),
-  //                   child: const Text(
-  //                     'No Image',
-  //                     style: TextStyle(
-  //                       color: Colors.black,
-  //                       fontSize: 20.0,
-  //                       fontWeight: FontWeight.bold,
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           )
-  //         ],
-  //         options: CarouselOptions(
-  //           disableCenter: true,
-  //           aspectRatio: 1,
-  //           initialPage: 1,
-  //           // enableInfiniteScroll: false
-  //         )),
-  //   );
-  // }
 }
 
 class HexColor extends Color {

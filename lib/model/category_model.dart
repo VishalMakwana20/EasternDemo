@@ -10,7 +10,7 @@ class AllCategories {
     if (json['categories'] != null) {
       categories = <Categories>[];
       json['categories'].forEach((v) {
-        categories!.add(new Categories.fromJson(v));
+        categories!.add(Categories.fromJson(v));
       });
     }
     bannerImage = json['banner_image'];
@@ -34,18 +34,18 @@ class Categories {
     if (json['child'] != null) {
       child = <Child>[];
       json['child'].forEach((v) {
-        child!.add(new Child.fromJson(v));
+        child!.add(Child.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['category_id'] = this.categoryId;
-    data['category_name'] = this.categoryName;
-    data['parent_id'] = this.parentId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['category_id'] = categoryId;
+    data['category_name'] = categoryName;
+    data['parent_id'] = parentId;
     if (child != null) {
-      data['child'] = this.child!.map((v) => v.toJson()).toList();
+      data['child'] = child!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -65,10 +65,10 @@ class Child {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['category_id'] = this.categoryId;
-    data['category_name'] = this.categoryName;
-    data['parent_id'] = this.parentId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['category_id'] = categoryId;
+    data['category_name'] = categoryName;
+    data['parent_id'] = parentId;
     return data;
   }
 }

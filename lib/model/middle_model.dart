@@ -18,25 +18,25 @@ class MiddlePage {
     if (json['shop_by_category'] != null) {
       shopByCategory = <ShopByCategory>[];
       json['shop_by_category'].forEach((v) {
-        shopByCategory!.add(new ShopByCategory.fromJson(v));
+        shopByCategory!.add(ShopByCategory.fromJson(v));
       });
     }
     if (json['shop_by_fabric'] != null) {
       shopByFabric = <ShopByFabric>[];
       json['shop_by_fabric'].forEach((v) {
-        shopByFabric!.add(new ShopByFabric.fromJson(v));
+        shopByFabric!.add(ShopByFabric.fromJson(v));
       });
     }
     if (json['Unstitched'] != null) {
       unstitched = <Unstitched>[];
       json['Unstitched'].forEach((v) {
-        unstitched!.add(new Unstitched.fromJson(v));
+        unstitched!.add(Unstitched.fromJson(v));
       });
     }
     if (json['boutique_collection'] != null) {
       boutiqueCollection = <BoutiqueCollection>[];
       json['boutique_collection'].forEach((v) {
-        boutiqueCollection!.add(new BoutiqueCollection.fromJson(v));
+        boutiqueCollection!.add(BoutiqueCollection.fromJson(v));
       });
     }
     status = json['status'];
@@ -44,24 +44,23 @@ class MiddlePage {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.shopByCategory != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (shopByCategory != null) {
       data['shop_by_category'] =
-          this.shopByCategory!.map((v) => v.toJson()).toList();
+          shopByCategory!.map((v) => v.toJson()).toList();
     }
-    if (this.shopByFabric != null) {
-      data['shop_by_fabric'] =
-          this.shopByFabric!.map((v) => v.toJson()).toList();
+    if (shopByFabric != null) {
+      data['shop_by_fabric'] = shopByFabric!.map((v) => v.toJson()).toList();
     }
-    if (this.unstitched != null) {
-      data['Unstitched'] = this.unstitched!.map((v) => v.toJson()).toList();
+    if (unstitched != null) {
+      data['Unstitched'] = unstitched!.map((v) => v.toJson()).toList();
     }
-    if (this.boutiqueCollection != null) {
+    if (boutiqueCollection != null) {
       data['boutique_collection'] =
-          this.boutiqueCollection!.map((v) => v.toJson()).toList();
+          boutiqueCollection!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }
@@ -85,12 +84,12 @@ class ShopByCategory {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['category_id'] = this.categoryId;
-    data['name'] = this.name;
-    data['tint_color'] = this.tintColor;
-    data['image'] = this.image;
-    data['sort_order'] = this.sortOrder;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['category_id'] = categoryId;
+    data['name'] = name;
+    data['tint_color'] = tintColor;
+    data['image'] = image;
+    data['sort_order'] = sortOrder;
     return data;
   }
 }
@@ -114,12 +113,12 @@ class ShopByFabric {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['fabric_id'] = this.fabricId;
-    data['name'] = this.name;
-    data['tint_color'] = this.tintColor;
-    data['image'] = this.image;
-    data['sort_order'] = this.sortOrder;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['fabric_id'] = fabricId;
+    data['name'] = name;
+    data['tint_color'] = tintColor;
+    data['image'] = image;
+    data['sort_order'] = sortOrder;
     return data;
   }
 }
@@ -140,11 +139,11 @@ class Unstitched {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['range_id'] = this.rangeId;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['image'] = this.image;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['range_id'] = rangeId;
+    data['name'] = name;
+    data['description'] = description;
+    data['image'] = image;
     return data;
   }
 }
@@ -165,11 +164,11 @@ class BoutiqueCollection {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['banner_image'] = this.bannerImage;
-    data['name'] = this.name;
-    data['cta'] = this.cta;
-    data['banner_id'] = this.bannerId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['banner_image'] = bannerImage;
+    data['name'] = name;
+    data['cta'] = cta;
+    data['banner_id'] = bannerId;
     return data;
   }
 }
