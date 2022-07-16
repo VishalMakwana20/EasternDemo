@@ -140,7 +140,24 @@ class _CategoryState extends State<Category> {
                                         height: 70,
                                         width: 100,
                                         fit: BoxFit.cover),
-                                  )
+                                  ),
+                                  if (list[index].child != null &&
+                                      list[index].child!.isNotEmpty) ...[
+                                    Positioned(
+                                        right: 0,
+                                        top: (MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.15) /
+                                            2,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            openDialog(list[index].child!);
+                                          },
+                                          child: const Icon(
+                                              Icons.arrow_downward_sharp),
+                                        ))
+                                  ]
                                 ],
                               ),
                               const Divider(
@@ -215,6 +232,32 @@ class _CategoryState extends State<Category> {
               ),
             ))
       ],
+    );
+  }
+
+  Future<void> openDialog(List<Child> list) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text("Category"),
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (ctx, index) {
+                  return SimpleDialogOption(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(list[index].categoryName ?? ''),
+                  );
+                },
+                itemCount: list.length,
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 }

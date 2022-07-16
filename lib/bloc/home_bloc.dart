@@ -17,6 +17,9 @@ class HomeBloc {
   final getBottomApiStreamController = PublishSubject<BottomPage>();
   Stream<BottomPage> get bottomStream => getBottomApiStreamController.stream;
 
+  final topIndexStreamController = PublishSubject<int>();
+  Stream<int> get topIndexStream => topIndexStreamController.stream;
+
   Future<void> fetchTopData() async {
     var response =
         await _apiManager.getApiCall('https://fabcurate.easternts.in/top.json');
@@ -36,9 +39,14 @@ class HomeBloc {
     getBottomApiStreamController.sink.add(BottomPage.fromJson(response));
   }
 
+  void updateIndex(int index) {
+    topIndexStreamController.sink.add(index);
+  }
+
   dispose() {
     getTopApiStreamController.close();
     getMiddleApiStreamController.close();
     getBottomApiStreamController.close();
+    topIndexStreamController.close();
   }
 }

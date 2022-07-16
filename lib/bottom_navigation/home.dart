@@ -564,24 +564,29 @@ class _HomeState extends State<Home> {
                     itemCount: listMainSticky.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return Card(
-                        child: SizedBox(
-                          width: 120,
-                          child: Column(
-                            children: [
-                              Image.network(
-                                listMainSticky[index]!.image!,
-                                height: 60,
-                                width: 120,
-                                fit: BoxFit.cover,
-                              ),
-                              Text(
-                                listMainSticky[index]?.title ?? '',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    overflow: TextOverflow.ellipsis),
-                              )
-                            ],
+                      return GestureDetector(
+                        onTap: () {
+                          homeBloc!.updateIndex(index);
+                        },
+                        child: Card(
+                          child: SizedBox(
+                            width: 120,
+                            child: Column(
+                              children: [
+                                Image.network(
+                                  listMainSticky[index]!.image!,
+                                  height: 60,
+                                  width: 120,
+                                  fit: BoxFit.cover,
+                                ),
+                                Text(
+                                  listMainSticky[index]?.title ?? '',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -635,69 +640,80 @@ class _HomeState extends State<Home> {
                 //       // enableInfiniteScroll: false
                 //     )),
 
-                CarouselSlider(
-                    items: listMainSticky[0]!.sliderImages!.map((item) {
-                      return ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5.0)),
-                        child: Stack(
-                          children: [
-                            Image.network(
-                              item.image!,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                            Positioned(
-                                bottom: 0,
-                                right: 0,
-                                left: 0,
-                                child: Container(
-                                  height: 40,
-                                  color: HexColor('#ccffcc'),
-                                )),
-                            Positioned(
-                              bottom: 10,
-                              right: MediaQuery.of(context).size.width * 0.10,
-                              left: MediaQuery.of(context).size.width * 0.10,
-                              child: Card(
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  color: Colors.white,
-                                  height: 75,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        (item.title! +
-                                                "\n\nPlain Starting just at  ₹79/-")
-                                            .toUpperCase(),
-                                        style: const TextStyle(fontSize: 9),
-                                      ),
-                                      const SizedBox(
-                                        height: 6,
-                                      ),
-                                      Text(
-                                        "+ Explore".toUpperCase(),
-                                        style: const TextStyle(fontSize: 6),
-                                      ),
-                                    ],
+                StreamBuilder<int>(
+                    stream: homeBloc!.topIndexStream,
+                    initialData: 0,
+                    builder: (context, snapshot) {
+                      return CarouselSlider(
+                          items: listMainSticky[snapshot.data!]!
+                              .sliderImages!
+                              .map((item) {
+                            return ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(5.0)),
+                              child: Stack(
+                                children: [
+                                  Image.network(
+                                    item.image!,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
                                   ),
-                                ),
+                                  Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      left: 0,
+                                      child: Container(
+                                        height: 40,
+                                        color: HexColor('#ccffcc'),
+                                      )),
+                                  Positioned(
+                                    bottom: 10,
+                                    right: MediaQuery.of(context).size.width *
+                                        0.10,
+                                    left: MediaQuery.of(context).size.width *
+                                        0.10,
+                                    child: Card(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        color: Colors.white,
+                                        height: 75,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              (item.title! +
+                                                      "\n\nPlain Starting just at  ₹79/-")
+                                                  .toUpperCase(),
+                                              style:
+                                                  const TextStyle(fontSize: 9),
+                                            ),
+                                            const SizedBox(
+                                              height: 6,
+                                            ),
+                                            Text(
+                                              "+ Explore".toUpperCase(),
+                                              style:
+                                                  const TextStyle(fontSize: 6),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    options: CarouselOptions(
-                      autoPlay: true,
-                      aspectRatio: 2.0,
-                      enlargeCenterPage: true,
-                      initialPage: 1,
-                      // enableInfiniteScroll: false
-                    )),
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                              autoPlay: true,
+                              aspectRatio: 2.0,
+                              enlargeCenterPage: true,
+                              initialPage: 0,
+                              enableInfiniteScroll: false));
+                    }),
 
                 const SizedBox(
                   height: 10,
